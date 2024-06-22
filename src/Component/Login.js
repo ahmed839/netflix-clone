@@ -1,13 +1,16 @@
 import React, { useRef, useState } from "react";
 import { checkValidData } from "../utils/validate";
+import Header from "./Header";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { auth } from "../utils/firebase";
+import { useNavigate } from "react-router-dom";
 const Login = () => {
   const [signInData, SetSignInData] = useState(true);
   const [errorMessage, SetErrorMessage] = useState(null);
+  const navigate = useNavigate();
   const email = useRef(null);
   const password = useRef(null);
   const fullname = useRef(null);
@@ -29,7 +32,7 @@ const Login = () => {
           // Signed up
           const user = userCredential.user;
           console.log(user);
-          // ...
+          navigate("/browse");
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -47,6 +50,7 @@ const Login = () => {
           // Signed in
           const user = userCredential.user;
           console.log(user);
+          navigate("/browse");
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -56,9 +60,16 @@ const Login = () => {
     }
   };
   return (
-    <div className="flex justify-center pt-16 items-center">
-      <div className="md:w-4/12  bg-black opacity-85 p-10">
-        <h1 className="text-white text-3xl font-semibold px-6 rounded shadow-md">
+    <div>
+      <Header />
+      <div className="absolute">
+        <img
+          alt="netflix"
+          src="https://assets.nflxext.com/ffe/siteui/vlv3/cacfadb7-c017-4318-85e4-7f46da1cae88/e43aa8b1-ea06-46a5-abe3-df13243e718d/IN-en-20240603-popsignuptwoweeks-perspective_alpha_website_medium.jpg"
+        />
+      </div>
+      <div className="w-full md:w-4/12 absolute p-8 bg-black my-32 mx-auto right-0 left-0 text-white rounded-lg bg-opacity-80">
+        <h1 className="text-white text-3xl font-semibold px-4 rounded shadow-md">
           {signInData ? "Sign In" : "Sign Up"}
         </h1>
         <form
@@ -84,7 +95,7 @@ const Login = () => {
               ref={email}
               type="text"
               placeholder="Enter Email"
-              className="w-full p-2 border bg-transparent text-white border-gray-300 rounded"
+              className="w-full p-2 border bg-transparent text-white border-gray-300 rounded focus:bg-transparent"
             />
           </div>
           <div className="mb-4">
@@ -92,12 +103,12 @@ const Login = () => {
               ref={password}
               type="password"
               placeholder="Password"
-              className="w-full p-2 border bg-transparent text-white border-gray-300 rounded"
+              className="w-full p-2 border bg-transparent text-white border-gray-300 rounded focus:bg-transparent"
             />
           </div>
-          <p className="text-red-800 font-semibold p-2">{errorMessage}</p>
+          <p className="text-red-800 font-bold p-2 z-30">{errorMessage}</p>
           <button
-            className="bg-red-800 text-white py-2 px-4 rounded w-full"
+            className="bg-customRed text-white py-2 px-4 rounded w-full"
             onClick={handleButtonClick}
           >
             {signInData ? "Sign In" : "Sign Up"}
